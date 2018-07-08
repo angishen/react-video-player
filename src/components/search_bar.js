@@ -9,14 +9,21 @@ class SearchBar extends Component {
     render() {
         return (
             <div className="search-bar">
-                <input
-                    className="prompt"
-                    placeholder="Search for videos..."
-                    value={this.state.term}
-                    onChange={ event => this.setState({ term: event.target.value }) } />
+                <form onSubmit={ event => this.onInputSubmit(event.target.value) }>
+                    <input type="text"
+                        placeholder={"Search"} />
+                    <button type="submit">
+                        <span className="glyphicon glyphicon-search"/>
+                    </button>
+                </form>
             </div>
 
         );
+    }
+
+    onInputSubmit(term) {
+        this.setState({term});
+        this.props.onSearchTermSubmit(term);
     }
 }
 
