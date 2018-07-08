@@ -3,15 +3,36 @@ import React, { Component } from 'react';
 class SearchBar extends Component {
     constructor(props) {
         super(props);
-
         this.state = { term: ''};
+
     }
+
+    handleChange(event) {
+        this.setState({term: event.target.value})
+    }
+
+    handleSubmit(event) {
+        this.props.handleSearchTermSubmit(this.state.term);
+        event.preventDefault()
+
+    }
+
+    handleEnterPressed(event) {
+        let code = event.keyCode || event.which;
+        if (code === 13) {
+            this.props.handleSearchTermSubmit(this.state.term);
+        }
+    }
+
     render() {
         return (
             <div className="search-bar">
-                <form onSubmit={ event => this.onInputSubmit(event.target.value) }>
+                <form onSubmit={this.handleSubmit.bind(this)}>
                     <input type="text"
-                        placeholder={"Search"} />
+                        value={this.state.term}
+                        placeholder={"Search"}
+                        onChange={this.handleChange.bind(this)}
+                        onKeyPress={this.handleEnterPressed.bind(this)}/>
                     <button type="submit">
                         <span className="glyphicon glyphicon-search"/>
                     </button>
@@ -19,11 +40,6 @@ class SearchBar extends Component {
             </div>
 
         );
-    }
-
-    onInputSubmit(term) {
-        this.setState({term});
-        this.props.onSearchTermSubmit(term);
     }
 }
 
